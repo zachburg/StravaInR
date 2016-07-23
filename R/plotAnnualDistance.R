@@ -15,25 +15,25 @@ plotAnnualDistance <- function(year) {
 
   activities <- fromJSON(toJSON(content(request)))
 
-  if (length(activities) != 0) {
-
-    activities <- activities[activities$type == "Ride", ]
-    date <- as.Date(strptime(activities$start_date_local, "%Y-%m-%dT%H:%M:%S"))
-    distance <- unlist(activities$distance) * 0.00062137
-
-    data <- data.frame(date, distance)
-    aggData <- aggregate(distance~date, data, sum)
-
-    runningSum <- vector(mode="double", length=length(aggData$date))
-    runningSum[1] <- aggData$distance[1]
-
-    for (i in 2 : length(runningSum)) {
-      runningSum[i] <- runningSum[i - 1] + aggData$distance[i]
-    }
-
-    plot(aggData$date, runningSum, type="s", main="Annual Distance",
-         xlab="Month", ylab="Miles")
-  } else {
+  if (length(activities) == 0) {
     print(paste("No activities in", year))
+    return()
   }
+
+  activities <- activities[activities$type == "Ride", ]
+  date <- as.Date(strptime(activities$start_date_local, "%Y-%m-%dT%H:%M:%S"))
+  distance <- unlist(activities$distance) * 0.00062137
+
+  data <- data.frame(date, distance)
+  aggData <- aggregate(distance~date, data, sum)
+
+  runningSum <- vector(mode="double", length=length(aggData$date))
+  runningSum[1] <- aggData$distance[1]
+
+  for (i in 2 : length(runningSum)) {
+    runningSum[i] <- runningSum[i - 1] + aggData$distance[i]
+  }
+
+  plot(aggData$date, runningSum, type="s", main="Annual Distance",
+       xlab="Month", ylab="Miles")
 }
