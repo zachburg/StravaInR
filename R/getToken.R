@@ -2,7 +2,7 @@
 # name, clientID, and clientSecret are unique to the user
 # and must be retrieved from the Strava API settings page
 
-getToken <- function(name, clientID, clientSecret) {
+GetToken <- function(name, clientID, clientSecret) {
   library(httr)
   endpoints <- oauth_endpoint(request="https://www.strava.com/oauth/authorize?",
                               authorize="https://www.strava.com/oauth/authorize",
