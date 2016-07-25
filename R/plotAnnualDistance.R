@@ -1,24 +1,6 @@
-plotAnnualDistance <- function(year) {
+PlotAnnualDistance <- function() {
 
-  afterTime <- paste(year, "-01-01", sep="")
-  beforeTime <- paste(year + 1, "-01-01", sep="")
-  afterUnix <- as.numeric(as.POSIXct(afterTime, format="%Y-%m-%d"))
-  beforeUnix <- as.numeric(as.POSIXct(beforeTime, format="%Y-%m-%d"))
-
-  reqURI <- paste("https://www.strava.com/api/v3/athlete/activities/?after=",
-                  afterUnix, "&before=", beforeUnix, sep="");
-  request <- GET(reqURI, config=config(token=token))
-  if (request$status_code != 200) {
-    print("Something wrong with request")
-    return()
-  }
-
-  activities <- fromJSON(toJSON(content(request)))
-
-  if (length(activities) == 0) {
-    print(paste("No activities in", year))
-    return()
-  }
+  activities <- ListAthleteActivities()
 
   activities <- activities[activities$type == "Ride", ]
   date <- as.Date(strptime(activities$start_date_local, "%Y-%m-%dT%H:%M:%S"))

@@ -5,6 +5,6 @@ ListAthleteActivities <- function(list.friends.activities = FALSE) {
   } else {
     reqUri <- paste(reqUri, "athlete/activities", sep = "")
   }
-  request <- GET(reqUri, config=config(token=token))
+  request <- GET(reqUri, config=config)
   return(fromJSON(toJSON(content(request))))
 }
